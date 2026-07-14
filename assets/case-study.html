@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BloodLink · Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0208;
+            color: #FFFFFF;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0208;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cc0033;
+            border-radius: 20px;
+            box-shadow: 0 0 40px #cc003388;
+        }
+
+        /* === BLOOD RAIN CANVAS === */
+        #bloodCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        /* === MODERN GLASS WITH BLOOD ACCENT === */
+        .glass-blood {
+            background: rgba(20, 5, 15, 0.55);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(204, 0, 51, 0.15);
+            box-shadow: 0 8px 48px rgba(204, 0, 51, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            z-index: 1;
+        }
+        .glass-blood:hover {
+            border-color: rgba(204, 0, 51, 0.35);
+            box-shadow: 0 12px 64px rgba(204, 0, 51, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transform: translateY(-6px) scale(1.01);
+        }
+
+        .gradient-blood-modern {
+            background: linear-gradient(135deg, #ff0033, #cc0033, #990026, #ff0033);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientMove 5s ease-in-out infinite;
+            text-shadow: 0 0 100px rgba(255, 0, 51, 0.15);
+        }
+        @keyframes gradientMove {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .badge-blood-modern {
+            background: rgba(204, 0, 51, 0.12);
+            border: 1px solid rgba(204, 0, 51, 0.25);
+            box-shadow: 0 0 60px rgba(204, 0, 51, 0.06);
+            color: #ff0033;
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            font-size: 2.8rem;
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -12px;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff0033, #cc0033);
+            border-radius: 20px;
+            box-shadow: 0 0 60px #ff003388;
+            animation: pulseWidth 4s ease-in-out infinite;
+        }
+        @keyframes pulseWidth {
+            0%,
+            100% {
+                width: 80px;
+                opacity: 1;
+            }
+            50% {
+                width: 140px;
+                opacity: 0.5;
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(70px) scale(0.95);
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* === HERO === */
+        .hero-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(ellipse at 30% 40%, #4a0a1a, #0a0208 70%);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .orb-blood {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.5;
+            animation: floatOrb 30s ease-in-out infinite;
+        }
+        .orb-1 {
+            width: 800px;
+            height: 800px;
+            background: #ff0033;
+            top: -300px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            width: 700px;
+            height: 700px;
+            background: #990026;
+            bottom: -250px;
+            left: -200px;
+            animation-delay: -10s;
+        }
+        .orb-3 {
+            width: 500px;
+            height: 500px;
+            background: #4a0a1a;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -20s;
+        }
+
+        @keyframes floatOrb {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, -60px) scale(1.2);
+            }
+            50% {
+                transform: translate(-40px, 50px) scale(0.8);
+            }
+            75% {
+                transform: translate(60px, 40px) scale(1.1);
+            }
+        }
+
+        /* === NAVBAR === */
+        .nav-blood-modern {
+            background: rgba(10, 2, 8, 0.8);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border-bottom: 1px solid rgba(204, 0, 51, 0.08);
+            transition: all 0.4s ease;
+            z-index: 100;
+        }
+        .nav-blood-modern.scrolled {
+            background: rgba(10, 2, 8, 0.95);
+            box-shadow: 0 4px 80px rgba(204, 0, 51, 0.06);
+            border-bottom: 1px solid rgba(204, 0, 51, 0.15);
+        }
+        .nav-link-modern {
+            position: relative;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.4s ease;
+            padding: 4px 0;
+        }
+        .nav-link-modern::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff0033, #cc0033);
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
+        }
+        .nav-link-modern:hover {
+            color: #ff0033;
+        }
+        .nav-link-modern:hover::after {
+            width: 100%;
+        }
+        .nav-link-modern.active {
+            color: #ff0033;
+        }
+        .nav-link-modern.active::after {
+            width: 100%;
+        }
+
+        .btn-donate {
+            background: linear-gradient(135deg, #ff0033, #cc0033);
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 30px rgba(204, 0, 51, 0.2);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-donate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 50px rgba(204, 0, 51, 0.4);
+        }
+
+        /* === CARDS === */
+        .stat-card-modern {
+            background: rgba(204, 0, 51, 0.04);
+            border: 1px solid rgba(204, 0, 51, 0.06);
+            transition: all 0.4s ease;
+        }
+        .stat-card-modern:hover {
+            background: rgba(204, 0, 51, 0.08);
+            transform: scale(1.05);
+            border-color: rgba(204, 0, 51, 0.15);
+            box-shadow: 0 0 60px rgba(204, 0, 51, 0.04);
+        }
+
+        .decision-blood-modern {
+            border-left: 4px solid #ff0033;
+            background: rgba(20, 5, 15, 0.3);
+            backdrop-filter: blur(4px);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: default;
+        }
+        .decision-blood-modern:hover {
+            background: rgba(40, 10, 30, 0.5);
+            box-shadow: 0 8px 48px rgba(204, 0, 51, 0.06);
+            border-left-color: #cc0033;
+            transform: translateX(8px) scale(1.01);
+        }
+
+        .footer-blood-modern {
+            background: linear-gradient(to right, #0a0208, #4a0a1a);
+            border-top: 1px solid rgba(204, 0, 51, 0.06);
+        }
+
+        .pulse-dot-modern {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #ff0033;
+            border-radius: 50%;
+            animation: pulseDot 2s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.5);
+        }
+        @keyframes pulseDot {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.6);
+                opacity: 0.4;
+            }
+        }
+
+        /* Blood drip decorative */
+        .blood-drip {
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(180deg, #ff0033, transparent);
+            border-radius: 50%;
+            animation: drip 4s ease-in-out infinite;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes drip {
+            0% {
+                transform: translateY(-20px) scaleY(1);
+                opacity: 0.15;
+            }
+            50% {
+                transform: translateY(80px) scaleY(1.8);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-20px) scaleY(1);
+                opacity: 0.15;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            .orb-1,
+            .orb-2,
+            .orb-3 {
+                width: 300px;
+                height: 300px;
+                filter: blur(60px);
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            #bloodCanvas {
+                opacity: 0.2;
+            }
+        }
+
+        /* highlight name */
+        .name-highlight {
+            color: #ff0033;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
+            background: linear-gradient(135deg, #ff0033, #cc0033);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- === BLOOD RAIN CANVAS === -->
+    <canvas id="bloodCanvas"></canvas>
+
+    <!-- === DECORATIVE BLOOD DRIPS === -->
+    <div class="blood-drip" style="left:5%; top:10%; animation-delay:0s;"></div>
+    <div class="blood-drip" style="right:8%; top:30%; animation-delay:1.5s;"></div>
+    <div class="blood-drip" style="left:15%; top:60%; animation-delay:3s;"></div>
+    <div class="blood-drip" style="right:12%; top:80%; animation-delay:2s;"></div>
+
+    <!-- === NAVBAR === -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-[100] nav-blood-modern px-4 md:px-12 py-4 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center gap-4">
+            <div class="text-2xl md:text-3xl font-extrabold tracking-tight gradient-blood-modern flex items-center gap-2">
+                <i class="fas fa-droplet text-[#ff0033] animate-pulse"></i> BloodLink <span class="text-white/50 font-light text-base md:text-lg hidden sm:inline">·</span> <span class="text-white/80 text-base md:text-lg font-medium hidden sm:inline">Case Study by <span class="name-highlight">Anees Kr. Ghosh</span></span>
+            </div>
+            <!-- mobile name (shorter) -->
+            <span class="sm:hidden text-white/80 text-sm font-medium"><span class="name-highlight">Anees</span></span>
+        </div>
+
+        <!-- Desktop -->
+        <div class="hidden md:flex items-center gap-8 text-sm">
+            <a href="#research" class="nav-link-modern">Research</a>
+            <a href="#methodology" class="nav-link-modern">Methodology</a>
+            <a href="#insights" class="nav-link-modern">Insights</a>
+            <a href="#personas" class="nav-link-modern">Personas</a>
+            <a href="#journey" class="nav-link-modern">Journey</a>
+            <a href="#conclusion" class="nav-link-modern">Conclusion</a>
+            <a href="index.html#home" class="btn-donate">
+                <i class="fas fa-arrow-left"></i> Portfolio
+            </a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button id="menuToggle" class="md:hidden text-[#ff0033] text-2xl hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden fixed top-0 left-0 w-full z-[99] bg-[#0a0208]/95 backdrop-blur-2xl hidden">
+        <div class="pt-24 pb-10 px-6 flex flex-col gap-5 text-base">
+            <a href="#research" class="nav-link-modern text-white/60 hover:text-[#ff0033] py-3 border-b border-[#ff0033]/5 text-base">Research</a>
+            <a href="#methodology" class="nav-link-modern text-white/60 hover:text-[#ff0033] py-3 border-b border-[#ff0033]/5 text-base">Methodology</a>
+            <a href="#insights" class="nav-link-modern text-white/60 hover:text-[#ff0033] py-3 border-b border-[#ff0033]/5 text-base">Insights</a>
+            <a href="#personas" class="nav-link-modern text-white/60 hover:text-[#ff0033] py-3 border-b border-[#ff0033]/5 text-base">Personas</a>
+            <a href="#journey" class="nav-link-modern text-white/60 hover:text-[#ff0033] py-3 border-b border-[#ff0033]/5 text-base">Journey</a>
+            <a href="#conclusion" class="nav-link-modern text-white/60 hover:text-[#ff0033] py-3 border-b border-[#ff0033]/5 text-base">Conclusion</a>
+            <a href="index.html#home" class="btn-donate w-full text-center mt-4">
+                <i class="fas fa-arrow-left mr-2"></i> Portfolio
+            </a>
+        </div>
+    </div>
+
+    <!-- === HERO === -->
+    <section class="hero-container" id="overview">
+        <div class="orb-blood orb-1"></div>
+        <div class="orb-blood orb-2"></div>
+        <div class="orb-blood orb-3"></div>
+
+        <div class="container mx-auto px-6 md:px-12 relative z-10 py-20 md:py-32">
+            <div class="max-w-4xl">
+                <div class="inline-flex items-center gap-2 badge-blood-modern text-[#ff0033] text-sm font-semibold px-6 py-3 rounded-full mb-8 tracking-wider uppercase animate-pulse">
+                    <i class="fas fa-bolt text-[#ff0033]"></i> Emergency Response · Case Study
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight">
+                    <span class="text-white">BloodLink</span> <br />
+                    <span class="gradient-blood-modern">Saving lives, one match at a time.</span>
+                </h1>
+                <p class="text-xl md:text-2xl lg:text-3xl text-[#ff0033]/60 max-w-2xl mt-8 border-l-4 border-[#ff0033] pl-8 font-light leading-relaxed">
+                    A unified real-time platform connecting patients, donors, hospitals, and NGOs to reduce emergency response time from hours to minutes.
+                </p>
+                <div class="flex flex-wrap gap-4 mt-10">
+                    <span class="glass-blood px-6 py-3 rounded-full text-base font-medium text-white/80 border border-[#ff0033]/20"><i class="fas fa-user-tie mr-2 text-[#ff0033]"></i>UX Researcher</span>
+                    <span class="glass-blood px-6 py-3 rounded-full text-base font-medium text-white/80 border border-[#ff0033]/20"><i class="fas fa-phone-alt mr-2 text-[#ff0033]"></i>Emergency Response</span>
+                    <span class="glass-blood px-6 py-3 rounded-full text-base font-medium text-white/80 border border-[#ff0033]/20"><i class="fas fa-expand mr-2 text-[#ff0033]"></i>End-to-end</span>
+                    <span class="glass-blood px-6 py-3 rounded-full text-base font-medium text-white/80 border border-[#ff0033]/20"><i class="far fa-clock mr-2 text-[#ff0033]"></i>6 Weeks</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === MAIN CONTENT === -->
+    <div class="container mx-auto px-6 md:px-12 relative z-10">
+
+        <!-- RESEARCH -->
+        <section id="research" class="mt-16 md:mt-28">
+            <h2 class="section-title text-white reveal">Research</h2>
+            <div class="grid md:grid-cols-2 gap-8 mt-14">
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <div class="text-4xl text-[#ff0033] mb-5"><i class="fas fa-hospital-alt"></i></div>
+                    <h3 class="text-3xl font-bold text-white">Project Background</h3>
+                    <p class="text-[#ff0033]/60 mt-4 text-lg leading-relaxed">Blood donation is one of the most critical healthcare services, yet thousands of patients struggle to find compatible blood during emergencies. Despite the presence of blood banks, hospitals, NGOs, and donor communities, there is no unified real-time platform that efficiently connects patients with nearby eligible blood donors.</p>
+                    <p class="text-[#ff0033]/60 mt-4 text-lg leading-relaxed">This project aims to design a digital ecosystem that minimizes the time required to find blood donors while improving coordination between donors, hospitals, and patients.</p>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <div class="text-4xl text-[#ff0033] mb-5"><i class="fas fa-bullseye"></i></div>
+                    <h3 class="text-3xl font-bold text-white">Research Goals</h3>
+                    <p class="text-[#ff0033]/60 mt-4 text-lg leading-relaxed">The research was conducted to understand the challenges faced by patients, blood donors, hospitals, and NGOs during emergency blood requests.</p>
+                    <ul class="mt-4 space-y-3 text-[#ff0033]/70 text-base">
+                        <li class="flex items-start gap-2 hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Understand the current blood request process</li>
+                        <li class="flex items-start gap-2 hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Identify pain points in existing systems</li>
+                        <li class="flex items-start gap-2 hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Analyze how hospitals manage blood shortages</li>
+                        <li class="flex items-start gap-2 hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Understand donor motivation and behavior</li>
+                        <li class="flex items-start gap-2 hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Discover opportunities for technology intervention</li>
+                        <li class="flex items-start gap-2 hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Validate the need for a real-time donor matching platform</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESEARCH QUESTIONS -->
+        <section class="mt-24">
+            <h2 class="section-title text-white reveal">Research Questions</h2>
+            <div class="grid md:grid-cols-4 gap-6 mt-14">
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl mb-4"><i class="fas fa-user-injured"></i><h4 class="font-bold text-white text-lg">Patients</h4></div>
+                    <ul class="text-[#ff0033]/50 text-sm space-y-3">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• How do patients search for blood?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Biggest challenges during emergencies?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• How long to find blood?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Communication methods used?</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl mb-4"><i class="fas fa-hand-holding-heart"></i><h4 class="font-bold text-white text-lg">Blood Donors</h4></div>
+                    <ul class="text-[#ff0033]/50 text-sm space-y-3">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• What motivates donation?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Why do donors become inactive?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• What info do donors need?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• How often contacted?</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl mb-4"><i class="fas fa-hospital"></i><h4 class="font-bold text-white text-lg">Hospitals</h4></div>
+                    <ul class="text-[#ff0033]/50 text-sm space-y-3">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• How are requests managed?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• What happens when inventory is low?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Biggest operational challenges?</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl mb-4"><i class="fas fa-hands-helping"></i><h4 class="font-bold text-white text-lg">NGOs</h4></div>
+                    <ul class="text-[#ff0033]/50 text-sm space-y-3">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• How are donations coordinated?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• How are donor databases maintained?</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Most effective channels?</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHODOLOGY -->
+        <section id="methodology" class="mt-28">
+            <h2 class="section-title text-white reveal">Research Methodology</h2>
+            <div class="grid md:grid-cols-2 gap-8 mt-14">
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <i class="fas fa-search text-4xl text-[#ff0033] mb-5"></i>
+                    <h3 class="text-3xl font-bold text-white">Primary Research</h3>
+                    <ul class="mt-4 space-y-3 text-[#ff0033]/60 text-base">
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Stakeholder interviews</li>
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> User interviews</li>
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Contextual observation</li>
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Online surveys</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <i class="fas fa-book-open text-4xl text-[#ff0033] mb-5"></i>
+                    <h3 class="text-3xl font-bold text-white">Secondary Research</h3>
+                    <ul class="mt-4 space-y-3 text-[#ff0033]/60 text-base">
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Existing blood donation platforms</li>
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Government healthcare portals</li>
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Blood bank workflows</li>
+                        <li class="flex items-center gap-2 hover:translate-x-3 transition-transform duration-300"><span class="text-[#ff0033] text-xl">▸</span> Healthcare articles &amp; reports</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Participants -->
+            <div class="mt-12 glass-blood rounded-3xl p-9 reveal">
+                <h3 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <i class="fas fa-users text-[#ff0033]"></i> Participants
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="stat-card-modern rounded-xl p-5 text-center cursor-pointer">
+                        <div class="text-4xl font-bold text-[#ff0033]">12</div>
+                        <div class="text-sm text-[#ff0033]/50 mt-1">Blood Donors</div>
+                    </div>
+                    <div class="stat-card-modern rounded-xl p-5 text-center cursor-pointer">
+                        <div class="text-4xl font-bold text-[#ff0033]">10</div>
+                        <div class="text-sm text-[#ff0033]/50 mt-1">Patients / Family</div>
+                    </div>
+                    <div class="stat-card-modern rounded-xl p-5 text-center cursor-pointer">
+                        <div class="text-4xl font-bold text-[#ff0033]">6</div>
+                        <div class="text-sm text-[#ff0033]/50 mt-1">Hospital Staff</div>
+                    </div>
+                    <div class="stat-card-modern rounded-xl p-5 text-center cursor-pointer">
+                        <div class="text-4xl font-bold text-[#ff0033]">4</div>
+                        <div class="text-sm text-[#ff0033]/50 mt-1">Blood Bank Personnel</div>
+                    </div>
+                    <div class="stat-card-modern rounded-xl p-5 text-center cursor-pointer">
+                        <div class="text-4xl font-bold text-[#ff0033]">5</div>
+                        <div class="text-sm text-[#ff0033]/50 mt-1">NGO Volunteers</div>
+                    </div>
+                </div>
+                <p class="text-center text-[#ff0033]/40 text-base mt-5">Total Participants: 37</p>
+            </div>
+        </section>
+
+        <!-- USER INTERVIEWS -->
+        <section class="mt-28">
+            <h2 class="section-title text-white reveal">User Interviews</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033]">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hand-holding-heart"></i><h4 class="font-bold text-white text-lg">Blood Donors</h4></div>
+                    <ul class="mt-4 space-y-2 text-[#ff0033]/50 text-sm">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Rarely receive verified emergency requests</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Random calls reduce trust</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Unsure about current eligibility</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Requests lack sufficient information</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033]">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-user-injured"></i><h4 class="font-bold text-white text-lg">Patients</h4></div>
+                    <ul class="mt-4 space-y-2 text-[#ff0033]/50 text-sm">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• High stress during emergencies</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Difficulty locating compatible donors</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Dependence on hospitals and social media</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Long response times</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033]">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hospital"></i><h4 class="font-bold text-white text-lg">Hospital Staff</h4></div>
+                    <ul class="mt-4 space-y-2 text-[#ff0033]/50 text-sm">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Blood stock is unpredictable</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Manual donor contacting is time-consuming</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Existing processes are fragmented</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Slow stakeholder communication</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033]">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hands-helping"></i><h4 class="font-bold text-white text-lg">NGO Volunteers</h4></div>
+                    <ul class="mt-4 space-y-2 text-[#ff0033]/50 text-sm">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Donor lists become outdated quickly</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Calls and messaging apps are time-consuming</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Tracking donor availability is difficult</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SURVEY RESULTS -->
+        <section class="mt-28">
+            <h2 class="section-title text-white reveal">Survey Results</h2>
+            <div class="grid md:grid-cols-3 gap-8 mt-14">
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">How do people search for blood?</h3>
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">40%</span> <span class="text-[#ff0033]/60 text-base">Hospital</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">30%</span> <span class="text-[#ff0033]/60 text-base">Friends &amp; Family</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">15%</span> <span class="text-[#ff0033]/60 text-base">WhatsApp Groups</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">10%</span> <span class="text-[#ff0033]/60 text-base">Facebook</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">5%</span> <span class="text-[#ff0033]/60 text-base">Blood Donation Apps</span></div>
+                    </div>
+                    <p class="text-[#ff0033]/40 text-sm mt-4">Most emergency requests still rely on manual communication.</p>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">Biggest Challenges</h3>
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">46%</span> <span class="text-[#ff0033]/60 text-base">Unable to find donor quickly</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">27%</span> <span class="text-[#ff0033]/60 text-base">Blood not available</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">15%</span> <span class="text-[#ff0033]/60 text-base">No nearby donor info</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">12%</span> <span class="text-[#ff0033]/60 text-base">Poor communication</span></div>
+                    </div>
+                    <p class="text-[#ff0033]/40 text-sm mt-4">Time is the biggest challenge.</p>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">Donor Motivation</h3>
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">58%</span> <span class="text-[#ff0033]/60 text-base">Helping others</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">24%</span> <span class="text-[#ff0033]/60 text-base">Social responsibility</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">12%</span> <span class="text-[#ff0033]/60 text-base">Donation drives</span></div>
+                        <div class="flex items-center justify-between hover:translate-x-2 transition-transform duration-300"><span class="text-[#ff0033] font-bold text-2xl">6%</span> <span class="text-[#ff0033]/60 text-base">Recognition</span></div>
+                    </div>
+                    <p class="text-[#ff0033]/40 text-sm mt-4">Most donors are intrinsically motivated.</p>
+                </div>
+            </div>
+
+            <!-- Additional survey insight -->
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">Reasons Donors Ignore Requests</h3>
+                    <div class="mt-4 space-y-3 text-[#ff0033]/60 text-base">
+                        <div class="hover:translate-x-2 transition-transform duration-300">• Busy schedule — 39%</div>
+                        <div class="hover:translate-x-2 transition-transform duration-300">• Late notifications — 23%</div>
+                        <div class="hover:translate-x-2 transition-transform duration-300">• Insufficient information — 19%</div>
+                        <div class="hover:translate-x-2 transition-transform duration-300">• Location too far — 11%</div>
+                        <div class="hover:translate-x-2 transition-transform duration-300">• Health concerns — 8%</div>
+                    </div>
+                    <p class="text-[#ff0033]/40 text-sm mt-4">Providing complete request information and intelligent notifications could improve donor response.</p>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">Current Workflow</h3>
+                    <ol class="mt-4 space-y-2 text-[#ff0033]/60 text-sm list-decimal list-inside">
+                        <li class="hover:translate-x-2 transition-transform duration-300">Patient needs blood</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Family contacts hospital</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Hospital checks inventory</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">If unavailable, blood bank is contacted</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">NGOs are informed</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Messages shared via WhatsApp / Facebook</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Volunteers call donors</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Suitable donor is found</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Donor travels to hospital</li>
+                        <li class="hover:translate-x-2 transition-transform duration-300">Blood is donated</li>
+                    </ol>
+                    <p class="text-[#ff0033]/40 text-sm mt-4"><span class="text-[#ff0033]">⏱</span> Average response time: 2–12 hours</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXISTING PROBLEMS -->
+        <section class="mt-28">
+            <h2 class="section-title text-white reveal">Existing Problems</h2>
+            <div class="grid md:grid-cols-4 gap-6 mt-14">
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-user-injured"></i><h4 class="font-bold text-white text-lg">Patients</h4></div>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Slow response time</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• No centralized platform</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Limited visibility of nearby donors</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• High emotional stress</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hand-holding-heart"></i><h4 class="font-bold text-white text-lg">Donors</h4></div>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Fake or incomplete requests</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• No availability management</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Random calls</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• No donation history</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hospital"></i><h4 class="font-bold text-white text-lg">Hospitals</h4></div>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Manual coordination</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Limited inventory</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• No real-time donor info</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border border-[#ff0033]/10 hover:border-[#ff0033]/30 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hands-helping"></i><h4 class="font-bold text-white text-lg">NGOs</h4></div>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Outdated donor databases</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• Manual communication</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">• No analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKET RESEARCH -->
+        <section class="mt-28">
+            <h2 class="section-title text-white reveal">Market Research</h2>
+            <div class="grid md:grid-cols-3 gap-8 mt-14">
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">e-RaktKosh</h3>
+                    <p class="text-[#ff0033]/50 text-base mt-2">National blood bank platform</p>
+                    <p class="text-[#ff0033]/60 text-sm mt-3"><span class="text-[#ff0033]">✓</span> Inventory management</p>
+                    <p class="text-[#ff0033]/40 text-sm mt-1"><span class="text-[#ff0033]/30">✗</span> Limited real-time donor matching</p>
+                    <p class="text-[#ff0033]/40 text-sm"><span class="text-[#ff0033]/30">✗</span> No live donor availability</p>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">Red Cross Blood Services</h3>
+                    <p class="text-[#ff0033]/50 text-base mt-2">Trusted organization</p>
+                    <p class="text-[#ff0033]/60 text-sm mt-3"><span class="text-[#ff0033]">✓</span> Donation campaigns</p>
+                    <p class="text-[#ff0033]/40 text-sm mt-1"><span class="text-[#ff0033]/30">✗</span> Focused on scheduled donations</p>
+                    <p class="text-[#ff0033]/40 text-sm"><span class="text-[#ff0033]/30">✗</span> Limited emergency peer-to-peer matching</p>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <h3 class="text-2xl font-bold text-white">Generic Blood Donor Apps</h3>
+                    <p class="text-[#ff0033]/50 text-base mt-2">Donor registration &amp; basic search</p>
+                    <p class="text-[#ff0033]/60 text-sm mt-3"><span class="text-[#ff0033]">✓</span> Donor registration</p>
+                    <p class="text-[#ff0033]/40 text-sm mt-1"><span class="text-[#ff0033]/30">✗</span> Poor verification</p>
+                    <p class="text-[#ff0033]/40 text-sm"><span class="text-[#ff0033]/30">✗</span> Outdated donor lists</p>
+                </div>
+            </div>
+            <!-- Gap Analysis -->
+            <div class="mt-10 glass-blood rounded-3xl p-10 reveal bg-[#4a0a1a]/10">
+                <h3 class="text-2xl font-bold text-white">Gap Analysis</h3>
+                <p class="text-[#ff0033]/60 text-base mt-2">Current solutions do not provide:</p>
+                <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3 text-[#ff0033]/50 text-sm">
+                    <li class="flex items-center gap-2 hover:text-[#ff0033]/70 transition-colors"><span class="text-[#ff0033]">•</span> Live donor availability</li>
+                    <li class="flex items-center gap-2 hover:text-[#ff0033]/70 transition-colors"><span class="text-[#ff0033]">•</span> Intelligent donor prioritization</li>
+                    <li class="flex items-center gap-2 hover:text-[#ff0033]/70 transition-colors"><span class="text-[#ff0033]">•</span> Real-time emergency coordination</li>
+                    <li class="flex items-center gap-2 hover:text-[#ff0033]/70 transition-colors"><span class="text-[#ff0033]">•</span> Integrated hospital &amp; NGO workflows</li>
+                    <li class="flex items-center gap-2 hover:text-[#ff0033]/70 transition-colors"><span class="text-[#ff0033]">•</span> Privacy-aware location sharing</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PERSONAS -->
+        <section id="personas" class="mt-28">
+            <h2 class="section-title text-white reveal">User Personas</h2>
+            <div class="grid md:grid-cols-3 gap-8 mt-14">
+                <div class="glass-blood rounded-3xl p-9 reveal border-t-4 border-[#ff0033] hover:-translate-y-2 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033]"><i class="fas fa-user-injured text-3xl"></i><h3 class="text-2xl font-bold text-white">Emergency Patient</h3></div>
+                    <p class="text-[#ff0033]/50 text-base mt-1">Age: 30 · Office Employee</p>
+                    <p class="text-[#ff0033]/60 text-lg mt-5 font-semibold">Goal</p>
+                    <p class="text-[#ff0033]/40 text-base">Find compatible blood within one hour.</p>
+                    <p class="text-[#ff0033]/60 text-lg mt-4 font-semibold">Pain Points</p>
+                    <ul class="text-[#ff0033]/40 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• No trusted donor contacts</li>
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Hospital has limited stock</li>
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Manual searching is stressful</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal border-t-4 border-[#ff0033] hover:-translate-y-2 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033]"><i class="fas fa-hand-holding-heart text-3xl"></i><h3 class="text-2xl font-bold text-white">Blood Donor</h3></div>
+                    <p class="text-[#ff0033]/50 text-base mt-1">Age: 24 · Student</p>
+                    <p class="text-[#ff0033]/60 text-lg mt-5 font-semibold">Goal</p>
+                    <p class="text-[#ff0033]/40 text-base">Donate blood safely when needed.</p>
+                    <p class="text-[#ff0033]/60 text-lg mt-4 font-semibold">Pain Points</p>
+                    <ul class="text-[#ff0033]/40 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Receives incomplete requests</li>
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Unsure about eligibility</li>
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Wants verified communication</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal border-t-4 border-[#ff0033] hover:-translate-y-2 transition-all duration-500">
+                    <div class="flex items-center gap-3 text-[#ff0033]"><i class="fas fa-user-md text-3xl"></i><h3 class="text-2xl font-bold text-white">Hospital Coordinator</h3></div>
+                    <p class="text-[#ff0033]/50 text-base mt-1">Age: 38 · Emergency Coordinator</p>
+                    <p class="text-[#ff0033]/60 text-lg mt-5 font-semibold">Goal</p>
+                    <p class="text-[#ff0033]/40 text-base">Arrange blood quickly for critical patients.</p>
+                    <p class="text-[#ff0033]/60 text-lg mt-4 font-semibold">Pain Points</p>
+                    <ul class="text-[#ff0033]/40 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Limited blood inventory</li>
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• Manual donor coordination</li>
+                        <li class="hover:text-[#ff0033]/60 transition-colors">• No centralized real-time system</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- EMPATHY MAP -->
+        <section class="mt-28">
+            <h2 class="section-title text-white reveal">Empathy Map</h2>
+            <div class="grid md:grid-cols-4 gap-6 mt-14">
+                <div class="glass-blood rounded-2xl p-8 reveal bg-[#4a0a1a]/20 hover:bg-[#4a0a1a]/30 transition-all duration-500">
+                    <h4 class="font-bold text-white text-lg flex items-center gap-3"><i class="fas fa-comment text-[#ff0033] text-xl"></i> Says</h4>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">"I need blood urgently."</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">"I don't know where to find donors."</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">"I want verified requests."</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal bg-[#4a0a1a]/20 hover:bg-[#4a0a1a]/30 transition-all duration-500">
+                    <h4 class="font-bold text-white text-lg flex items-center gap-3"><i class="fas fa-brain text-[#ff0033] text-xl"></i> Thinks</h4>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">"Will I get blood in time?"</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">"Can I trust this request?"</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">"Who is available nearby?"</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal bg-[#4a0a1a]/20 hover:bg-[#4a0a1a]/30 transition-all duration-500">
+                    <h4 class="font-bold text-white text-lg flex items-center gap-3"><i class="fas fa-heart text-[#ff0033] text-xl"></i> Feels</h4>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Anxious</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Hopeful</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Responsible</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Overwhelmed</li>
+                    </ul>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal bg-[#4a0a1a]/20 hover:bg-[#4a0a1a]/30 transition-all duration-500">
+                    <h4 class="font-bold text-white text-lg flex items-center gap-3"><i class="fas fa-actions text-[#ff0033] text-xl"></i> Does</h4>
+                    <ul class="mt-3 text-[#ff0033]/50 text-sm space-y-2">
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Calls hospitals</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Contacts NGOs</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Posts on social media</li>
+                        <li class="hover:text-[#ff0033]/70 transition-colors">Makes multiple calls</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- USER JOURNEY -->
+        <section id="journey" class="mt-28">
+            <h2 class="section-title text-white reveal">User Journey</h2>
+            <div class="grid md:grid-cols-2 gap-8 mt-14">
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-user-injured"></i><h3 class="text-2xl font-bold text-white">Patient Journey</h3></div>
+                    <p class="text-[#ff0033]/50 text-base mt-3">Need blood → Search → Contact hospital → Wait → Donor found → Hospital → Donation complete</p>
+                    <div class="mt-5 p-5 bg-[#4a0a1a]/20 rounded-xl hover:bg-[#4a0a1a]/30 transition-all duration-300">
+                        <p class="text-[#ff0033]/60 text-base font-semibold">Pain Points</p>
+                        <p class="text-[#ff0033]/40 text-sm">Waiting, uncertainty, repeated calls</p>
+                        <p class="text-[#ff0033]/60 text-base font-semibold mt-3">Opportunity</p>
+                        <p class="text-[#ff0033]/40 text-sm">Automated nearby donor matching</p>
+                    </div>
+                </div>
+                <div class="glass-blood rounded-3xl p-9 reveal">
+                    <div class="flex items-center gap-3 text-[#ff0033] text-2xl"><i class="fas fa-hand-holding-heart"></i><h3 class="text-2xl font-bold text-white">Donor Journey</h3></div>
+                    <p class="text-[#ff0033]/50 text-base mt-3">Register → Receive notification → Review request → Accept → Navigate → Donate</p>
+                    <div class="mt-5 p-5 bg-[#4a0a1a]/20 rounded-xl hover:bg-[#4a0a1a]/30 transition-all duration-300">
+                        <p class="text-[#ff0033]/60 text-base font-semibold">Pain Points</p>
+                        <p class="text-[#ff0033]/40 text-sm">Incomplete information, distance</p>
+                        <p class="text-[#ff0033]/60 text-base font-semibold mt-3">Opportunity</p>
+                        <p class="text-[#ff0033]/40 text-sm">Verified requests and smart filtering</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KEY INSIGHTS -->
+        <section id="insights" class="mt-28">
+            <h2 class="section-title text-white reveal">Key Insights</h2>
+            <div class="grid md:grid-cols-2 gap-6 mt-14">
+                <div class="decision-blood-modern rounded-2xl p-8 reveal">
+                    <p class="text-[#ff0033]/70 text-base">• Emergency response time is the biggest problem.</p>
+                </div>
+                <div class="decision-blood-modern rounded-2xl p-8 reveal">
+                    <p class="text-[#ff0033]/70 text-base">• Trust and verification are essential for both donors and patients.</p>
+                </div>
+                <div class="decision-blood-modern rounded-2xl p-8 reveal">
+                    <p class="text-[#ff0033]/70 text-base">• Hospitals need a centralized system for donor coordination.</p>
+                </div>
+                <div class="decision-blood-modern rounded-2xl p-8 reveal">
+                    <p class="text-[#ff0033]/70 text-base">• Donors prefer verified requests with complete information.</p>
+                </div>
+                <div class="decision-blood-modern rounded-2xl p-8 reveal">
+                    <p class="text-[#ff0033]/70 text-base">• Intelligent location-based matching can significantly improve response rates.</p>
+                </div>
+                <div class="decision-blood-modern rounded-2xl p-8 reveal">
+                    <p class="text-[#ff0033]/70 text-base">• Privacy controls are important to encourage donor participation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW MIGHT WE -->
+        <section class="mt-28">
+            <h2 class="section-title text-white reveal">How Might We (HMW)</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033] hover:shadow-xl hover:shadow-[#ff0033]/5 transition-all duration-500 hover:translate-x-2">
+                    <p class="text-[#ff0033]/70 text-base">How might we reduce the time required to find compatible blood donors?</p>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033] hover:shadow-xl hover:shadow-[#ff0033]/5 transition-all duration-500 hover:translate-x-2">
+                    <p class="text-[#ff0033]/70 text-base">How might we help hospitals connect with verified nearby donors instantly?</p>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033] hover:shadow-xl hover:shadow-[#ff0033]/5 transition-all duration-500 hover:translate-x-2">
+                    <p class="text-[#ff0033]/70 text-base">How might we increase donor trust and response rates?</p>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033] hover:shadow-xl hover:shadow-[#ff0033]/5 transition-all duration-500 hover:translate-x-2">
+                    <p class="text-[#ff0033]/70 text-base">How might we protect donor privacy while enabling emergency coordination?</p>
+                </div>
+                <div class="glass-blood rounded-2xl p-8 reveal border-l-4 border-[#ff0033] hover:shadow-xl hover:shadow-[#ff0033]/5 transition-all duration-500 hover:translate-x-2">
+                    <p class="text-[#ff0033]/70 text-base">How might we create a unified platform for patients, hospitals, NGOs, and donors?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESEARCH CONCLUSION -->
+        <section id="conclusion" class="mt-28">
+            <h2 class="section-title text-white reveal">Research Conclusion</h2>
+            <div class="glass-blood rounded-3xl p-10 md:p-14 mt-10 reveal bg-gradient-to-br from-[#4a0a1a]/20 via-[#ff0033]/5 to-transparent border border-[#ff0033]/10">
+                <p class="text-2xl md:text-3xl text-[#ff0033]/80 leading-relaxed">
+                    The research revealed that the primary challenge is not the shortage of willing donors, but the lack of an efficient, trusted, and real-time coordination system. Existing processes rely heavily on manual communication, causing delays during emergencies. BloodLink addresses this gap by introducing verified donor profiles, intelligent location-based matching, real-time notifications, hospital collaboration, and transparent request tracking, creating a faster and more reliable emergency blood donation ecosystem.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer-blood-modern rounded-t-3xl mt-32 py-14 px-6 text-center text-[#ff0033]/40 text-sm border-t border-[#ff0033]/5">
+            <p class="font-medium text-[#ff0033]/60 text-base flex items-center justify-center gap-3">
+                <i class="fas fa-heart text-[#ff0033] animate-pulse"></i>
+                © 2026 · BloodLink · Emergency Blood Donation App · UX Research Case Study By Anees Kumar Ghosh
+            </p>
+            <p class="mt-4 opacity-40 text-sm"><i class="fas fa-arrow-up mr-2"></i> scroll to explore</p>
+        </footer>
+    </div>
+
+    <!-- === SCRIPTS === -->
+    <script>
+        // === BLOOD RAIN CANVAS ===
+        (function() {
+            const canvas = document.getElementById('bloodCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let drops = [];
+            const MAX_DROPS = 220;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class BloodDrop {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = -20 - Math.random() * 100;
+                    this.length = 8 + Math.random() * 20;
+                    this.speed = 2 + Math.random() * 6;
+                    this.opacity = 0.1 + Math.random() * 0.25;
+                    this.width = 1.5 + Math.random() * 2.5;
+                    this.wobble = (Math.random() - 0.5) * 0.4;
+                    this.wobbleSpeed = 0.02 + Math.random() * 0.03;
+                    this.phase = Math.random() * Math.PI * 2;
+                }
+                update() {
+                    this.y += this.speed;
+                    this.x += Math.sin(this.phase) * this.wobble;
+                    this.phase += this.wobbleSpeed;
+                    if (this.y > height + 50) {
+                        this.reset();
+                        this.y = -20 - Math.random() * 100;
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(this.x + this.wobble * 2, this.y + this.length);
+                    ctx.strokeStyle = `rgba(204, 0, 51, ${this.opacity})`;
+                    ctx.lineWidth = this.width;
+                    ctx.shadowColor = 'rgba(204, 0, 51, 0.2)';
+                    ctx.shadowBlur = 15;
+                    ctx.stroke();
+                    // Glow at top
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2 + this.width, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 0, 51, ${this.opacity * 0.6})`;
+                    ctx.shadowBlur = 30;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < MAX_DROPS; i++) {
+                drops.push(new BloodDrop());
+            }
+
+            function animateBlood() {
+                ctx.clearRect(0, 0, width, height);
+                drops.forEach(drop => {
+                    drop.update();
+                    drop.draw();
+                });
+                requestAnimationFrame(animateBlood);
+            }
+            animateBlood();
+        })();
+
+        // === REVEAL ON SCROLL ===
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // === NAVBAR SCROLL ===
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // === MOBILE MENU ===
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let menuOpen = false;
+
+        menuToggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('hidden');
+            menuToggle.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuOpen = false;
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // === SMOOTH NAV + ACTIVE ===
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.querySelectorAll('.nav-link-modern').forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // === ACTIVE NAV ON SCROLL ===
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            document.querySelectorAll('.nav-link-modern').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
