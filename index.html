@@ -20,7 +20,6 @@
     <link id='favicon' rel="shortcut icon" href="assets/images/favicon.png" type="image/x-png">
 
     <style>
-        /* ===== BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -33,10 +32,8 @@
             color: #ffffff;
             overflow-x: hidden;
             min-height: 100vh;
-            transition: all 0.5s ease;
         }
 
-        /* ===== GLASS EFFECT ===== */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -60,18 +57,16 @@
             box-shadow: 0 12px 48px rgba(139, 92, 246, 0.15);
         }
 
-        /* ===== FLOATING HOVER ANIMATION ===== */
         .float-hover {
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        
+
         .float-hover:hover {
             transform: translateY(-12px) scale(1.02);
             border-color: rgba(139, 92, 246, 0.4);
             box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
         }
 
-        /* ===== PARTICLES BACKGROUND ===== */
         #particles-js {
             position: fixed;
             top: 0;
@@ -81,7 +76,6 @@
             z-index: 0;
         }
 
-        /* ===== NAVIGATION - FIXED & RESPONSIVE ===== */
         .nav-glow {
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(24px);
@@ -149,7 +143,6 @@
             background: linear-gradient(90deg, #f472b6, #ec4899);
         }
 
-        /* Case Study Button in Nav */
         .btn-case-study {
             position: relative;
             border: none;
@@ -180,7 +173,8 @@
         }
 
         @keyframes glowPulse {
-            0%, 100% {
+            0%,
+            100% {
                 box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
             }
             50% {
@@ -188,7 +182,6 @@
             }
         }
 
-        /* ===== GLOW BUTTONS ===== */
         .btn-glow {
             position: relative;
             border: none;
@@ -230,7 +223,6 @@
             transform: translateY(-2px);
         }
 
-        /* ===== SECTION TITLES ===== */
         .section-title {
             font-size: 2.5rem;
             font-weight: 800;
@@ -248,7 +240,6 @@
             font-size: 0.75rem;
         }
 
-        /* ===== HERO GLOW ===== */
         .hero-glow {
             position: absolute;
             width: 400px;
@@ -272,7 +263,8 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+            0%,
+            100% {
                 transform: scale(1);
                 opacity: 0.5;
             }
@@ -282,7 +274,6 @@
             }
         }
 
-        /* ===== PROJECT IMAGES - FIXED ===== */
         .project-img {
             width: 100%;
             height: 200px;
@@ -292,6 +283,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .project-img img {
@@ -300,13 +294,76 @@
             object-fit: contain;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             background: rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .project-img:hover {
+            transform: scale(1.02);
         }
 
         .project-img:hover img {
             transform: scale(1.05);
         }
 
-        /* ===== PROFILE IMAGE ===== */
+        .img-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 30px;
+            cursor: pointer;
+        }
+
+        .img-overlay.active {
+            display: flex;
+        }
+
+        .img-overlay .overlay-card {
+            background: rgba(20, 20, 20, 0.95);
+            border-radius: 24px;
+            padding: 16px;
+            max-width: 90vw;
+            max-height: 90vh;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: zoomIn 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .img-overlay .overlay-card img {
+            max-width: 100%;
+            max-height: 80vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            display: block;
+            pointer-events: none;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         .profile-img {
             width: 160px;
             height: 160px;
@@ -323,7 +380,6 @@
             box-shadow: 0 0 80px rgba(139, 92, 246, 0.3);
         }
 
-        /* ===== WEB DESIGN CARDS ===== */
         .web-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
@@ -332,7 +388,7 @@
             border-radius: 20px;
             overflow: hidden;
             transition: all 0.4s ease;
-            cursor: pointer;
+            cursor: default;
         }
 
         .web-card:hover {
@@ -410,7 +466,38 @@
             gap: 10px;
         }
 
-        /* ===== TOOLS SECTION ===== */
+        .btn-case-study-small {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            color: white;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+            text-decoration: none;
+            margin-top: 8px;
+        }
+
+        .btn-case-study-small:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 0 32px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+        }
+
+        .web-card .web-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
         .tool-icon {
             width: 60px;
             height: 60px;
@@ -431,7 +518,6 @@
             border-color: #ec4899;
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -445,7 +531,6 @@
             background: linear-gradient(180deg, #8b5cf6, #ec4899);
         }
 
-        /* ===== PRELOADER - CIRCULAR WITH PERCENTAGE ===== */
         .loader-container {
             background: #0a0a0a;
             z-index: 9999;
@@ -501,7 +586,6 @@
             margin-top: 16px;
         }
 
-        /* ===== TYPING CURSOR ===== */
         .typing-cursor {
             display: inline-block;
             width: 3px;
@@ -513,11 +597,15 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
         }
 
-        /* ===== RESPONSIVE NAV - FIXED ===== */
         @media (max-width: 992px) {
             .nav-glow {
                 padding: 6px 12px;
@@ -525,23 +613,19 @@
                 min-width: auto;
                 top: 12px;
             }
-
             .nav-glow .nav-link {
                 padding: 6px 10px;
                 font-size: 11px;
                 gap: 4px;
             }
-
             .nav-glow .nav-link i {
                 font-size: 10px;
             }
-
             .btn-case-study {
                 padding: 6px 12px;
                 font-size: 10px;
                 gap: 4px;
             }
-
             .btn-case-study i {
                 font-size: 10px;
             }
@@ -556,29 +640,24 @@
                 max-width: 98vw;
                 border-radius: 40px;
             }
-
             .nav-glow .nav-link {
                 padding: 4px 8px;
                 font-size: 10px;
                 gap: 2px;
                 border-radius: 30px;
             }
-
             .nav-glow .nav-link i {
                 font-size: 9px;
             }
-
             .btn-case-study {
                 padding: 4px 10px;
                 font-size: 9px;
                 gap: 2px;
                 border-radius: 30px;
             }
-
             .btn-case-study i {
                 font-size: 9px;
             }
-
             .btn-case-study span {
                 display: none;
             }
@@ -591,25 +670,21 @@
                 top: 8px;
                 border-radius: 30px;
             }
-
             .nav-glow .nav-link {
                 padding: 3px 6px;
                 font-size: 8px;
                 gap: 1px;
                 border-radius: 20px;
             }
-
             .nav-glow .nav-link i {
                 font-size: 7px;
             }
-
             .btn-case-study {
                 padding: 3px 6px;
                 font-size: 7px;
                 gap: 1px;
                 border-radius: 20px;
             }
-
             .btn-case-study i {
                 font-size: 7px;
             }
@@ -620,16 +695,13 @@
                 padding: 2px 4px;
                 font-size: 7px;
             }
-            
             .nav-glow .nav-link i {
                 font-size: 6px;
             }
-            
             .btn-case-study {
                 padding: 2px 4px;
                 font-size: 6px;
             }
-            
             .btn-case-study i {
                 font-size: 6px;
             }
@@ -639,10 +711,10 @@
 
 <body>
 
-    <!-- ===== PARTICLES BACKGROUND ===== -->
+    <!-- PARTICLES BACKGROUND -->
     <div id="particles-js"></div>
 
-    <!-- ===== PRELOADER WITH CIRCULAR PERCENTAGE ===== -->
+    <!-- PRELOADER -->
     <div class="loader-container fixed inset-0 flex items-center justify-center" id="preloader">
         <div class="text-center">
             <div class="loader-circle mx-auto">
@@ -653,11 +725,9 @@
                             <stop offset="100%" stop-color="#8b5cf6" />
                         </linearGradient>
                     </defs>
-                    <!-- Background circle -->
                     <circle class="bg-circle" cx="60" cy="60" r="52" />
-                    <!-- Progress circle -->
                     <circle class="progress-circle" id="progressCircle" cx="60" cy="60" r="52"
-                        stroke-dasharray="326.726" stroke-dashoffset="326.726" />
+                    stroke-dasharray="326.726" stroke-dashoffset="326.726" />
                 </svg>
                 <div class="center-text" id="loaderPercent">0%</div>
             </div>
@@ -665,7 +735,7 @@
         </div>
     </div>
 
-    <!-- ===== NAVIGATION - FIXED & RESPONSIVE ===== -->
+    <!-- NAVIGATION -->
     <nav class="nav-glow">
         <a href="#home" class="nav-link active" data-section="home">
             <i class="fas fa-home"></i> Home
@@ -688,36 +758,29 @@
         </a>
     </nav>
 
-    <!-- ===== UI/UX CONTENT ===== -->
     <!-- HERO SECTION -->
     <section id="home" class="relative min-h-screen flex items-center justify-center px-4 pt-20">
         <div class="hero-glow"></div>
         <div class="hero-glow-2"></div>
-
         <div class="relative z-10 max-w-4xl mx-auto text-center">
             <div class="mb-6">
                 <img src="assets/dp.jpg" alt="Anees Kr Ghosh" class="profile-img mx-auto">
             </div>
-
             <div class="inline-block px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-medium mb-4">
                 <i class="fas fa-paint-brush mr-1"></i> UI/UX Designer
             </div>
-
             <h1 class="text-4xl md:text-6xl font-extrabold mb-4">
                 Hi, I'm <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent" id="typingText">Anees Kr Ghosh</span>
                 <span class="typing-cursor" id="typingCursor"></span>
             </h1>
-
             <p class="text-lg md:text-xl text-white/60 mb-2">
                 I create <span class="text-pink-400 font-medium">beautiful</span> and
                 <span class="text-pink-400 font-medium">intuitive</span> digital experiences
             </p>
-
             <p class="text-white/40 max-w-2xl mx-auto mb-8 text-sm leading-relaxed">
                 Crafting user-centered designs that blend aesthetics with functionality.
                 Specializing in Figma, Adobe XD, and modern design systems.
             </p>
-
             <div class="flex flex-wrap items-center justify-center gap-4">
                 <a href="#projects" class="btn-glow">
                     <i class="fas fa-rocket mr-2"></i>View My Work
@@ -726,8 +789,6 @@
                     <i class="fas fa-paper-plane mr-2"></i>Let's Talk
                 </a>
             </div>
-
-            <!-- Social Icons -->
             <div class="flex items-center justify-center gap-4 mt-8">
                 <a href="https://www.linkedin.com/in/anees-kumar-ghosh-183034258/" target="_blank" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-pink-500/50 transition-all duration-300 hover:scale-110">
                     <i class="fab fa-linkedin-in text-lg"></i>
@@ -738,7 +799,6 @@
                 <a href="mailto:aneesghosh98.ag@gmail.com" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-pink-500/50 transition-all duration-300 hover:scale-110">
                     <i class="fas fa-envelope text-lg"></i>
                 </a>
-
                 <a href="https://www.instagram.com/aneeskumarghosh/" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-pink-500/50 transition-all duration-300 hover:scale-110">
                     <i class="fab fa-instagram text-lg"></i>
                 </a>
@@ -746,63 +806,51 @@
         </div>
     </section>
 
-    <!-- ===== PROJECTS SECTION WITH IMAGES ===== -->
+    <!-- GRAPHIC DESIGN PROJECTS -->
     <section id="projects" class="relative py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
                 <p class="section-subtitle">Portfolio</p>
                 <h2 class="section-title">Graphic Design Projects</h2>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Project 1 -->
                 <div class="glass-card rounded-2xl p-6 float-hover">
-                    <div class="project-img">
+                    <div class="project-img" data-img="assets/s1.png">
                         <img src="assets/s1.png" alt="Nike Shoe Banner">
                     </div>
                     <h3 class="text-xl font-bold mb-2 mt-4">Nike Shoe Banner</h3>
                     <p class="text-white/50 text-sm mb-4">Bold aesthetics engineered for a legendary brand.</p>
                 </div>
-
-                <!-- Project 2 -->
                 <div class="glass-card rounded-2xl p-6 float-hover">
-                    <div class="project-img">
+                    <div class="project-img" data-img="assets/s2.png">
                         <img src="assets/s2.png" alt="Arimax Shoe Banner">
                     </div>
                     <h3 class="text-xl font-bold mb-2 mt-4">Arimax Shoe Banner</h3>
                     <p class="text-white/50 text-sm mb-4">Capturing the weightless innovation of Air in every pixel.</p>
                 </div>
-
-                <!-- Project 3 -->
                 <div class="glass-card rounded-2xl p-6 float-hover">
-                    <div class="project-img">
+                    <div class="project-img" data-img="assets/s4.png">
                         <img src="assets/s4.png" alt="Sneaker Shoe Banner">
                     </div>
                     <h3 class="text-xl font-bold mb-2 mt-4">Sneaker Shoe Banner</h3>
                     <p class="text-white/50 text-sm mb-4">Crafting visual hype that turns sneakerheads into buyers.</p>
                 </div>
-
-                <!-- Project 4 -->
                 <div class="glass-card rounded-2xl p-6 float-hover">
-                    <div class="project-img">
+                    <div class="project-img" data-img="assets/s3.png">
                         <img src="assets/s3.png" alt="GYM Banner">
                     </div>
                     <h3 class="text-xl font-bold mb-2 mt-4">GYM Banner</h3>
                     <p class="text-white/50 text-sm mb-4">Translating sweat and adrenaline into powerful brand creative.</p>
                 </div>
-
-                <!-- Project 5 -->
                 <div class="glass-card rounded-2xl p-6 float-hover">
-                    <div class="project-img">
+                    <div class="project-img" data-img="assets/s5.png">
                         <img src="assets/s5.png" alt="Smart Watch Banner">
                     </div>
                     <h3 class="text-xl font-bold mb-2 mt-4">Smart Watch</h3>
                     <p class="text-white/50 text-sm mb-4">Balancing premium lifestyle aesthetics with clean product utility.</p>
                 </div>
-
-                <!-- Project 6 -->
                 <div class="glass-card rounded-2xl p-6 float-hover">
-                    <div class="project-img">
+                    <div class="project-img" data-img="assets/s6.png">
                         <img src="assets/s6.png" alt="Food Banner">
                     </div>
                     <h3 class="text-xl font-bold mb-2 mt-4">Food Banner</h3>
@@ -812,7 +860,7 @@
         </div>
     </section>
 
-    <!-- ===== WEB DESIGN PROJECTS SECTION WITH IMAGES ===== -->
+    <!-- WEB DESIGN PROJECTS -->
     <section id="web-projects" class="relative py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
@@ -820,115 +868,96 @@
                 <h2 class="section-title">Web Design Projects</h2>
                 <p class="text-white/40 mt-2 max-w-2xl mx-auto text-sm">Crafting beautiful, responsive, and user-friendly websites</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Web Card 1 -->
                 <div class="web-card">
                     <div class="web-thumb">
-                        <img src="assets/bl.jpg" alt="Tech Blog">
+                        <img src="assets/bl.jpg" alt="Blood Link">
                     </div>
                     <div class="web-content">
                         <h4>Blood Link</h4>
                         <p>Emergency Blood Donation App.</p>
                         <div class="web-tags">
                             <span>Figma</span>
-                            <span>MDX</span>
-                            <span>Tailwind</span>
                         </div>
-                        <a href="https://www.figma.com/proto/9yJOAEfb3sSm39veCK2wVu/PRATICE-FILE-ANEES?node-id=949-2409&t=mcsZOXSnnkF6cTRx-9&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=949%3A2409&show-proto-sidebar=1" class="web-link" class="web-link">
+                        <div class="web-actions">
+                            <a href="https://www.figma.com/proto/9yJOAEfb3sSm39veCK2wVu/PRATICE-FILE-ANEES?node-id=949-2409&t=mcsZOXSnnkF6cTRx-9&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=949%3A2409&show-proto-sidebar=1" class="web-link" target="_blank">
+                                View Project <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="assets/case-study.html" target="_blank" class="btn-case-study-small">
+                                <i class="fas fa-book-open"></i> Show Case Study
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="web-card">
+                    <div class="web-thumb">
+                        <img src="assets/ap.png" alt="AneesPay">
+                    </div>
+                    <div class="web-content">
+                        <h4>AneesPay | The Ultimate Financial Command Center</h4>
+                        <p>Your Money, Moving with You. Send, Receive, and Analyze Your Wealth Swiftly.</p>
+                        <div class="web-tags">
+                            <span>Figma</span>
+                        </div>
+                        <a href="https://www.figma.com/proto/9yJOAEfb3sSm39veCK2wVu/PRATICE-FILE-ANEES?node-id=892-41&t=hPGzb2v2yRv4k2aN-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=892%3A10&show-proto-sidebar=1" class="web-link" target="_blank">
                             View Project <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-
-                <!-- Web Card 2 -->
                 <div class="web-card">
                     <div class="web-thumb">
-                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&h=220&fit=crop" alt="Tech Blog">
+                        <img src="assets/ft.png" alt="FreshPlate">
                     </div>
                     <div class="web-content">
-                        <h4>Tech Blog Platform</h4>
-                        <p>Minimalist blog design with focus on readability and content hierarchy.</p>
+                        <h4>FreshPlate | Smart Waste-Free Kitchen Assistant</h4>
+                        <p>Cook Smart, Waste Less. Track Your Fridge Inventory and Unlock AI-Driven Meal Recommendations.</p>
                         <div class="web-tags">
-                            <span>Next.js</span>
-                            <span>MDX</span>
-                            <span>Tailwind</span>
-                        </div>
-                        <a href="https://www.figma.com/proto/9yJOAEfb3sSm39veCK2wVu/PRATICE-FILE-ANEES?node-id=892-41&t=hPGzb2v2yRv4k2aN-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=892%3A10&show-proto-sidebar=1" class="web-link" class="web-link">
-                            View Project <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Web Card 3 -->
-                <div class="web-card">
-                    <div class="web-thumb">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=220&fit=crop" alt="Corporate Landing">
-                    </div>
-                    <div class="web-content">
-                        <h4>Corporate Landing Page</h4>
-                        <p>Professional corporate website with smooth animations and conversion-focused design.</p>
-                        <div class="web-tags">
-                            <span>HTML/CSS</span>
-                            <span>JavaScript</span>
-                            <span>GSAP</span>
+                            <span>Figma</span>
                         </div>
                         <a href="#" class="web-link">
                             View Project <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-
-                <!-- Web Card 4 -->
                 <div class="web-card">
                     <div class="web-thumb">
-                        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=220&fit=crop" alt="Cafe Website">
+                        <img src="assets/bf.png" alt="BookFlow">
                     </div>
                     <div class="web-content">
-                        <h4>Cafe Website</h4>
-                        <p>Warm and inviting cafe website with menu display and online ordering system.</p>
+                        <h4>BookFlow | Premium Reading Habit Builder</h4>
+                        <p>Cultivating Health Through Knowledge. Set Achievable Goals and Build a Consistent Reading Streak.</p>
                         <div class="web-tags">
-                            <span>Vue.js</span>
-                            <span>CSS</span>
-                            <span>Firebase</span>
+                            <span>Figma</span>
                         </div>
                         <a href="#" class="web-link">
                             View Project <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-
-                <!-- Web Card 5 -->
                 <div class="web-card">
                     <div class="web-thumb">
-                        <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&h=220&fit=crop" alt="Photography Portfolio">
+                        <img src="assets/fe.png" alt="Find Everything">
                     </div>
                     <div class="web-content">
-                        <h4>Photography Portfolio</h4>
-                        <p>Stunning portfolio website with gallery grid and lightbox functionality.</p>
+                        <h4>Find Everything | Your Ultimate On-Demand Service Hub</h4>
+                        <p>From Local Repairs to Personal Care, Book Trusted Professionals Instantly All in One Place.</p>
                         <div class="web-tags">
-                            <span>React</span>
-                            <span>Framer Motion</span>
-                            <span>Tailwind</span>
+                            <span>Figma</span>
                         </div>
                         <a href="#" class="web-link">
                             View Project <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-
-                <!-- Web Card 6 -->
                 <div class="web-card">
                     <div class="web-thumb">
-                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c7f1?w=400&h=220&fit=crop" alt="Educational Platform">
+                        <img src="assets/ep.png" alt="EduVerse">
                     </div>
                     <div class="web-content">
-                        <h4>Educational Platform</h4>
-                        <p>Online learning platform with course catalog and progress tracking features.</p>
+                        <h4>EduVerse | Next-Generation Digital Learning Platform</h4>
+                        <p>Discover Expert Courses, Attend Live Classes, and Track Your Path to Certified Success.</p>
                         <div class="web-tags">
-                            <span>Next.js</span>
-                            <span>Tailwind</span>
-                            <span>Prisma</span>
+                            <span>Figma</span>
                         </div>
                         <a href="#" class="web-link">
                             View Project <i class="fas fa-arrow-right"></i>
@@ -947,7 +976,6 @@
                 <h2 class="section-title">My Design Toolkit</h2>
                 <p class="text-white/40 mt-2 max-w-2xl mx-auto text-sm">Tools I use to bring ideas to life</p>
             </div>
-
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <div class="tool-item glass-card rounded-2xl p-6 text-center">
                     <div class="tool-icon mx-auto mb-3"><i class="fab fa-figma"></i></div>
@@ -1001,43 +1029,39 @@
         </div>
     </section>
 
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="relative py-20 px-4">
-        <div class="max-w-2xl mx-auto">
-            <div class="text-center mb-16">
-                <p class="section-subtitle">Get In Touch</p>
-                <h2 class="section-title">Let's Connect</h2>
-                <p class="text-white/40 mt-2 text-sm">Have a project in mind? Let's work together!</p>
-            </div>
-
-            <div class="glass-card rounded-2xl p-8">
-                <form name="form1" action="https://formcarry.com/s/Q13PTiVwp5i" method="POST" accept-charset="UTF-8">
-                    <div class="mb-4">
-                        <label class="text-white/60 text-sm font-medium block mb-2">Your Name</label>
-                        <input id="name" type="text" name="name" placeholder="Anees Kr" required
-                        class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="text-white/60 text-sm font-medium block mb-2">Email Address</label>
-                        <input id="email" type="email" name="email" placeholder="akgdesign@gmail.com" required
-                        class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all">
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="text-white/60 text-sm font-medium block mb-2">Message</label>
-                        <textarea id="textArea" name="message" placeholder="Type your message here..." required rows="4"
-                        class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all resize-none"></textarea>
-                    </div>
-
-                    <button id="lnch" type="button" class="btn-glow w-full flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane"></i>
-                        Send Message
-                    </button>
-                </form>
-            </div>
+<!-- CONTACT SECTION -->
+<section id="contact" class="relative py-20 px-4">
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-16">
+            <p class="section-subtitle">Get In Touch</p>
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="text-white/40 mt-2 text-sm">Have a project in mind? Let's work together!</p>
         </div>
-    </section>
+        <div class="glass-card rounded-2xl p-8">
+            <form name="form1" action="https://formcarry.com/s/Q13PTiVwp5i" method="POST" accept-charset="UTF-8">
+                <div class="mb-4">
+                    <label class="text-white/60 text-sm font-medium block mb-2">Your Name</label>
+                    <input id="name" type="text" name="name" placeholder="Anees Kr" required
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all">
+                </div>
+                <div class="mb-4">
+                    <label class="text-white/60 text-sm font-medium block mb-2">Email Address</label>
+                    <input id="email" type="email" name="email" placeholder="akgdesign@gmail.com" required
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all">
+                </div>
+                <div class="mb-6">
+                    <label class="text-white/60 text-sm font-medium block mb-2">Message</label>
+                    <textarea id="textArea" name="message" placeholder="Type your message here..." required rows="4"
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all resize-none"></textarea>
+                </div>
+                <button id="lnch" type="submit" class="btn-glow w-full flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
 
     <!-- FOOTER -->
     <footer class="relative py-8 px-4 border-t border-white/5">
@@ -1048,7 +1072,14 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS ===== -->
+    <!-- OVERLAY -->
+    <div class="img-overlay" id="imageOverlay">
+        <div class="overlay-card">
+            <img id="overlayImage" src="" alt="Full view">
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js">
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js'>
@@ -1057,13 +1088,12 @@
     </script>
 
     <script>
-        // ===== PRELOADER WITH CIRCULAR PROGRESS =====
+        // PRELOADER
         (function() {
             const preloader = document.getElementById('preloader');
             const percentEl = document.getElementById('loaderPercent');
             const circle = document.getElementById('progressCircle');
-            const circumference = 326.726; // 2 * PI * 52
-
+            const circumference = 326.726;
             let progress = 0;
             const interval = setInterval(function() {
                 progress += Math.floor(Math.random() * 6) + 2;
@@ -1078,19 +1108,16 @@
                         }, 800);
                     }, 400);
                 }
-                // Update percentage text
                 percentEl.textContent = progress + '%';
-                // Update circle
                 const offset = circumference - (progress / 100) * circumference;
                 circle.style.strokeDashoffset = offset;
             }, 120);
         })();
 
-        // ===== TYPING EFFECT =====
+        // TYPING EFFECT
         (function() {
             const text = "Anees Kr Ghosh";
             const typingEl = document.getElementById('typingText');
-            const cursorEl = document.getElementById('typingCursor');
             let index = 0;
             let isDeleting = false;
 
@@ -1115,12 +1142,10 @@
                     setTimeout(typeEffect, 80);
                 }
             }
-
-            // Start after preloader hides
             setTimeout(typeEffect, 2500);
         })();
 
-        // ===== PARTICLES =====
+        // PARTICLES
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
@@ -1158,14 +1183,13 @@
             retina_detect: true
         });
 
-        // ===== NAVIGATION ACTIVE STATE =====
+        // NAVIGATION
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('section[id]');
 
         function updateActiveLink() {
             let current = 'home';
             let scrollPosition = window.scrollY + 150;
-
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.offsetHeight;
@@ -1173,7 +1197,6 @@
                     current = section.id;
                 }
             });
-
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.dataset.section === current) {
@@ -1182,22 +1205,8 @@
             });
         }
 
-        let ticking = false;
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                window.requestAnimationFrame(function() {
-                    updateActiveLink();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
+        window.addEventListener('scroll', updateActiveLink);
 
-        window.addEventListener('load', function() {
-            updateActiveLink();
-        });
-
-        // ===== SMOOTH SCROLL =====
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1214,7 +1223,7 @@
             });
         });
 
-        // ===== CONTACT FORM =====
+        // CONTACT FORM
         $(function() {
             const name = document.querySelector("#name");
             const email = document.querySelector("#email");
@@ -1249,6 +1258,44 @@
                 }, 1500);
             });
         });
+
+        // ===== CLICK-BASED OVERLAY - NO BLINKING =====
+        const overlay = document.getElementById('imageOverlay');
+        const overlayImg = document.getElementById('overlayImage');
+        let currentImage = '';
+
+        // Click to open overlay
+        document.querySelectorAll('.project-img').forEach(container => {
+            container.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const imgSrc = this.getAttribute('data-img');
+                if (imgSrc) {
+                    currentImage = imgSrc;
+                    overlayImg.src = imgSrc;
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Close overlay when clicking on background
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeOverlay();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                closeOverlay();
+            }
+        });
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     </script>
 
 </body>
