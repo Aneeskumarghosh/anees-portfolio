@@ -97,9 +97,15 @@
         }
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 
-        .nav-shell {
+        /* --- NAV WRAPPER --- */
+        .nav-wrapper {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 100; display: flex; align-items: center; gap: 8px;
+            z-index: 100; display: flex; align-items: center; gap: 10px;
+            max-width: calc(100vw - 24px); flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-shell {
+            display: flex; align-items: center; gap: 8px;
             padding: 6px 8px; border-radius: 60px;
             background: rgba(11, 11, 20, 0.72);
             backdrop-filter: blur(24px) saturate(1.4);
@@ -153,7 +159,7 @@
         }
         .btn-cta:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 32px rgba(34, 211, 238, 0.5); }
 
-        /* --- Case Study button: fully separate, right side --- */
+        /* --- Case Study buttons (two) --- */
         .btn-case-nav {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 8px 16px; border-radius: 40px;
@@ -162,19 +168,13 @@
             border: none; text-decoration: none; white-space: nowrap;
             transition: all .3s var(--ease);
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-            margin-left: 4px; /* small gap from nav-shell */
         }
         .btn-case-nav:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 32px rgba(139, 92, 246, 0.6); }
-
-        /* Fixed top bar wrapper for nav + separate button */
-        .nav-wrapper {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 100; display: flex; align-items: center; gap: 10px;
-            max-width: calc(100vw - 24px);
+        .btn-case-nav.secondary {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
         }
-        .nav-wrapper .nav-shell {
-            position: static; transform: none; left: auto; top: auto;
-        }
+        .btn-case-nav.secondary:hover { box-shadow: 0 0 32px rgba(251, 191, 36, 0.6); }
 
         @media (max-width: 900px) {
             .nav-wrapper { top: 12px; gap: 6px; }
@@ -675,7 +675,7 @@
         <a href="https://wa.me/918906454507?text=Hey%20Anees%2C%20I%20found%20your%20portfolio%20and%20I'd%20like%20to%20connect%20about%20a%20project!" target="_blank" class="wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
     </div>
 
-    <!-- NAV WRAPPER: nav shell + separate case study button on the right -->
+    <!-- NAV WRAPPER: nav shell + TWO separate case study buttons on the right -->
     <div class="nav-wrapper">
         <nav class="nav-shell">
             <div class="nav-brand">
@@ -690,9 +690,12 @@
                 <a href="#contact" class="btn-cta"><i class="fas fa-paper-plane"></i>Hire Me</a>
             </div>
         </nav>
-        <!-- Case Study button: fully separate, right side -->
+        <!-- Case Study buttons: two separate buttons -->
         <a href="assets/case-study.html" class="btn-case-nav" target="_blank">
-            <i class="fas fa-book-open"></i><span>Case Study</span>
+            <i class="fas fa-book-open"></i><span>Project Blood Link Case Study</span>
+        </a>
+        <a href="assets/case-study-2.html" class="btn-case-nav secondary" target="_blank">
+            <i class="fas fa-book-open"></i><span>Project Annapurna Case Study</span>
         </a>
     </div>
 
@@ -1143,7 +1146,7 @@
                         <p>Car Engine Fluids — Performance you can trust. Premium fluids engineered for peak engine health.</p>
                         <div class="app-tags"><span>Automotive</span><span>Engine</span><span>Fluids</span></div>
                         <div class="web-actions">
-                            <a href="https://voivo.netlify.app/" class="web-link">View Project<i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="web-link">View Project [Launching Soon...] <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </article>
